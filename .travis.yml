@@ -3,7 +3,10 @@ php:
   - 5.6
   - 7.1
   
-install:
-  - composer install --prefer-dist --no-dev --optimize-autoloader --quiet
+before_script: 
+  - composer install --dev --no-interaction --prefer-source
+  - cp ./.env.travis ./.env
+  - touch ./database/testing.sqlite
+  - php artisan migrate --database=sqlite_testing --no-interaction
   
 script: phpunit --configuration phpunit.xml --coverage-text
